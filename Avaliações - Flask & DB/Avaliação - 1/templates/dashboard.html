@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block head%}
+<title>Dashboard</title>
+{{super()}}
+{% endblock %}
+
+{% block nav %}
+<nav>
+    
+</nav>
+{% endblock %}
+
+{% block content %}
+<h1>Bem vindo {{cargo}}, {{nome}}.</h1>
+<a href="{{url_for('index')}}">Voltar para a página inicial.</a>
+{% endblock %}

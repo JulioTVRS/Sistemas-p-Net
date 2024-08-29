@@ -1,0 +1,13 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Inicio</title>
+{{super()}}
+{% endblock %}
+
+{% block content %}
+<div>
+    <img src="{{url_for('static', filename='images/school.png')}}" alt="Imagem não encontrada">
+</div>
+{% endblock %}
+
