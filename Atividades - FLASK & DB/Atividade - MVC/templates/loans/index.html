@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <h1>Lista de Empréstimos</h1>
+
+    <a href="{{url_for('loans.register')}}">Adicionar empréstimo</a>
+    <hr>
+    {% for loan in loans %}
+    <div style="background-color: beige; margin: 15px 0;">
+        <p>Nome: {{loan.user_name}}</p>
+        <p>Titulo do Livro: {{loan.book_title}}</p>
+        <p>Data de empréstimo: {{loan.data_emprestimo}}</p>
+        <p>Data de devolução: {{loan.data_devolucao}}</p>
+    </div>
+    {% endfor %}
+    
+    
+    
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Empréstimo - Register</title>
+</head>
+<body>
+
+    <h1>Registrar Empréstimos</h1>
+
+    <div>
+        <h2>Dados</h2>
+        <form action="{{url_for('loans.register')}}" method="post">
+            <select name="user">
+                {% for user in users %}
+                    <option value="{{user.id}}">{{user.nome}}</option>    
+                {% endfor %}                
+            </select>
+
+            <select name="book">
+                {% for book in books %}
+                    <option value="{{book.id}}">{{book.titulo}}</option>    
+                {% endfor %}                
+            </select>
+            <button>Enviar</button>
+        </form>
+    </div>
+    
+</body>
+</html>
