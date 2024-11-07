@@ -1,5 +1,5 @@
 
-all = [
+__all__ = [
     'books',
     'users',
     'loans'
