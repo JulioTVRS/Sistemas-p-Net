@@ -1,63 +1,50 @@
-from flask import Flask, request, render_template, \
-    redirect, url_for, flash
-import sqlite3, os.path
 
-DATABASE = 'database.db'
+from flask import Flask, render_template, request, redirect, url_for
+from sqlalchemy import *
+from sqlalchemy.orm import *
+
+
+engine = create_engine('sqlite:///database.db')
+
+Base = declarative_base()
+
+class User(Base):
+    __tablename__ = 'users'
+
+    id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True, nullable=False)
+    nome: Mapped[str] = mapped_column(Text, nullable=False)
+
+    def __init__(self, nome):
+        self.nome = nome
+
+Base.metadata.create_all(engine)
 
 app = Flask(__name__)
 
-# habilitar mensagens flash
-app.config['SECRET_KEY'] = 'muitodificil'
-
-# obtém conexão com o banco de dados
-def get_connection():
-    conn = sqlite3.connect(DATABASE)
-    conn.row_factory = sqlite3.Row
-    return conn
+app
 
 @app.route('/')
 def index():
-    conn = get_connection()
-    users = conn.execute("SELECT * FROM users").fetchall()
-    conn.close()
-    return render_template('pages/index.html', users=users)
+    return render_template('index.html')
 
-@app.route('/create', methods=['POST', 'GET'])
-def create():
+@app.route('/register', methods=["GET", "POST"])
+def register():
     if request.method == 'POST':
-        email = request.form['email']
-        senha= request.form['password']
+        nome = request.form.get('nome')
+        session = Session(engine)
+        novo_usuario = User(nome=nome)
+        session.add(novo_usuario)
+        session.commit()
+        session.close()
 
-        if not email:
-            flash('Email é obrigatório')
-        else:
-            conn = get_connection()
-            conn.execute("INSERT INTO users(email, senha) VALUES (?,?)", (email, senha))
-            conn.commit()
-            conn.close()
-            return redirect(url_for('index'))
+        
+        
+        return redirect(url_for('register'))
     
-    return render_template('pages/create.html')
-
-@app.route('/<int:id>/edit', methods=['POST', 'GET'])
-def edit(id):
-
-    # obter informação do usuário
-    conn = get_connection()
-    user = conn.execute('SELECT id, email, senha FROM users WHERE id == ?', (str(id))).fetchone()
-
-    if user == None:
-        return redirect(url_for('error', message='Usuário Inexistente'))
-
-    if request.method == 'POST':
-        email = request.form['email']
-
-        conn.execute('UPDATE users SET email=? WHERE id=?', (email, id))
-        return redirect(url_for('index'))
+    session = Session(engine)
+    usuarios = session.query(User).all()
     
-    return render_template('pages/edit.html', user=user)
+    return render_template('register.html', usuarios=usuarios)
 
-@app.route('/error')
-def error():
-    error = request.args.get('message')
-    return render_template('errors/error.html', message=error)
+
+
