@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Criar Livro</title>
+</head>
+<body>
+    <div>
+        <h1>Criar Novo Livro</h1>
+
+        <form action="{{ url_for('create_book') }}" method="POST">
+            <div>
+                <label for="title">Título do Livro</label>
+                <input type="text" name="title" required>
+            </div>
+
+            <div>
+                <label for="genre">Gênero do Livro</label>
+                <input type="text" name="genre" required placeholder="Digite o gênero do livro">
+            </div>
+
+            <button type="submit">Criar Livro</button>
+        </form>
+
+        <br>
+        <a href="{{ url_for('dash') }}">Voltar ao Dashboard</a>
+    </div>
+</body>
+</html>

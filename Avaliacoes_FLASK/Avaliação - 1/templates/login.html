@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Login</title>
+{{super()}}
+{% endblock %}
+
+{% block content %}
+<div>
+    <h1>Login</h1>
+    <form action="{{url_for('login')}}" method="post">
+        <input type="text" id="nome" name="nome" placeholder="Seu nome de usuário" required> <br>
+        <input type="password" id="senha" placeholder="Sua senha" name="senha" required> <br>
+        <label for="cargo">Sua conta é de:</label>
+        <select id="cargo" name="cargo">
+            <option value="professor">Professor</option>
+            <option value="aluno">Aluno</option>
+        </select> <br>
+        <input type="submit">
+    </form>
+</div>
+{% endblock %}
