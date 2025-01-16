@@ -1,24 +1,10 @@
 from flask import Flask, render_template, request, url_for, redirect
-from flask_sqlalchemy import SQLAlchemy
-from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
-
-class Base(DeclarativeBase):
-    pass
-
-db = SQLAlchemy(model_class=Base)
-
-class User(db.Model):
-    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    nome: Mapped[str] = mapped_column(nullable=False)
-    senha: Mapped[int] = mapped_column(nullable=False)
-
-class Book(db.Model):
-    id: Mapped[int] = mapped_column(primary_key=True, autoincrement=True)
-    titulo: Mapped[str] = mapped_column(nullable=False)
-    autor: Mapped[str] = mapped_column(nullable=False)
+from database import db
+from database.models import User, Book
+from database.config import Config
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///projeto.db'
+app.config.from_object(Config)
 
 db.init_app(app)
 
@@ -29,7 +15,7 @@ with app.app_context():
 def index():
     return render_template('index.html')
 
-@app.route('/registraruser', methods=['POST','GET'])
+@app.route('/registraruser', methods=['POST', 'GET'])
 def registraruser():
     if request.method == "POST":
         nome = request.form['nome']
@@ -39,13 +25,12 @@ def registraruser():
 
         db.session.add(newUser)
         db.session.commit()
-        db.session.close()
 
         return redirect(url_for('listarusers'))
 
     return render_template('registraruser.html')
 
-@app.route('/registrarbook', methods=['POST','GET'])
+@app.route('/registrarbook', methods=['POST', 'GET'])
 def registrarbook():
     if request.method == "POST":
         titulo = request.form['titulo']
@@ -55,7 +40,6 @@ def registrarbook():
 
         db.session.add(newBook)
         db.session.commit()
-        db.session.close()
 
         return redirect(url_for('listarbooks'))
 
@@ -70,3 +54,6 @@ def listarusers():
 def listarbooks():
     resultado = db.session.query(Book).all()
     return render_template('listarbooks.html', resultado=resultado)
+
+if __name__ == '__main__':
+    app.run(debug=True)
