@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Locações</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Lista de Locações</h1>
+        <table>
+            <tr>
+                <th>Cliente</th>
+                <th>Veículo</th>
+            </tr>
+            {% for locacao in locacoes %}
+            <tr>
+                <td>{{ locacao.cliente.nome }}</td>
+                <td>{{ locacao.veiculo.modelo }}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        <a class="btn" href="{{ url_for('cadastrar_locacao') }}">Nova Locação</a>
+        <a class="btn back-btn" href="{{ url_for('index') }}">Voltar</a>
+    </div>
+</body>
+</html>

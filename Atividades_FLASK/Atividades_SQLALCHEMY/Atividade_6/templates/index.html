@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Locadora</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Bem-vindo à Locadora</h1>
+        <a class="btn" href="{{ url_for('listar_clientes') }}">Clientes</a>
+        <a class="btn" href="{{ url_for('listar_veiculos') }}">Veículos</a>
+        <a class="btn" href="{{ url_for('listar_locacoes') }}">Locações</a>
+    </div>
+</body>
+</html>
